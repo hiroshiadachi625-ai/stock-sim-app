@@ -18,9 +18,11 @@ import data_fetch
 import news_fetch
 import scoring
 import portfolio
+import ui_style
 
 st.set_page_config(page_title="株式シミュレーションゲーム(個人用)", page_icon="📈", layout="wide")
 auth.require_password()
+ui_style.inject()
 portfolio.init_db()
 
 st.title("📈 株式投資 情報表示・仮想売買シミュレーション")
@@ -98,7 +100,13 @@ with tab_reco:
                     "株数", min_value=1, value=default_qty, step=1, key=f"qty_{reco.ticker}"
                 )
                 buy_disabled = reco.price_info.error is not None or reco.price_info.current_price is None
-                if st.button("✅ 買ったつもり", key=f"buy_{reco.ticker}", disabled=buy_disabled, use_container_width=True):
+                if st.button(
+                    "✅ 買ったつもり",
+                    key=f"buy_{reco.ticker}",
+                    disabled=buy_disabled,
+                    use_container_width=True,
+                    type="primary",
+                ):
                     portfolio.add_virtual_buy(
                         ticker=reco.ticker,
                         name=reco.name,
